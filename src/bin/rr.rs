@@ -1,5 +1,4 @@
 use std::env;
-use std::fmt::Result;
 use std::io::{stderr, stdout, Write};
 use std::path::Path;
 
@@ -8,19 +7,19 @@ use rustyline::Editor;
 
 use std::process::{Command, Stdio};
 
-fn main() -> Result {
+fn main() {
     let mut rl = Editor::<()>::new();
     let program = match env::args().nth(1) {
         Some(program) => program,
         None => {
             println!("Invalid arguments, run with `rr <command>`");
-            return Ok(());
+            return;
         }
     };
     let history_home = format!("{}", shellexpand::tilde("~/.shell-extension"));
     let history_home = Path::new(&history_home);
     let history_location = history_home.join(Path::new(&program).file_name().unwrap());
-    if !history_home.parent().unwrap().exists() {
+    if !history_home.exists() {
         std::fs::create_dir_all(&history_home).unwrap();
     }
     let pre = format!("{}: >> ", program);
@@ -66,5 +65,4 @@ fn main() -> Result {
         }
     }
     rl.save_history(&history_location).unwrap();
-    Ok(())
 }

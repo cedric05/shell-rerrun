@@ -1,6 +1,6 @@
 [package]
 name = "shell-rerun"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Shiva Prasanth <kesavarapu.siva@gmail.com>"]
 description = "Simple command runner to rerun same command with different args every time."
