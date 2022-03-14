@@ -9,3 +9,6 @@ Simple command runner to rerun same command with different args every time.
 - `rr docker`
 
 
+## Install
+
+`cargo install shell-rerun`
