@@ -1,6 +1,6 @@
 [package]
 name = "shell-rerun"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Shiva Prasanth <kesavarapu.siva@gmail.com>"]
 description = "Simple command runner to rerun same command with different args every time."
@@ -17,3 +17,7 @@ shell-words = "1.1.0"
 
 [profile.release]
 strip = "symbols"
+[package.metadata.binstall]
+pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ target }-v{ version }.{ archive-format }"
+bin-dir = "{ name }-{ target }-v{ version }/{ bin }{ binary-ext }"
+pkg-fmt = "tgz"
