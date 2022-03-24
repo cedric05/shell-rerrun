@@ -21,19 +21,19 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
-            output: cargo-binstall
+            output: rr
             archive: tgz
           - target: x86_64-apple-darwin
             os: macos-latest
-            output: cargo-binstall
+            output: rr
             archive: zip
           - target: armv7-unknown-linux-gnueabihf
             os: ubuntu-20.04
-            output: cargo-binstall
+            output: rr
             archive: tgz
           - target: x86_64-pc-windows-msvc
             os: windows-latest
-            output: cargo-binstall.exe
+            output: rr.exe
             archive: zip
 
     steps:
@@ -85,29 +85,29 @@ jobs:
 
     - name: Create archive (tgz, linux)
       if: ${{ matrix.os != 'macos-latest' && matrix.os != 'windows-latest' }}
-      run: tar -czvf cargo-binstall-${{ matrix.target }}.tgz ${{ matrix.output }}
+      run: tar -czvf shell-rerun-${{ matrix.target }}.tgz ${{ matrix.output }}
     
     - name: Create archive (zip, windows)
       if: ${{ matrix.os == 'windows-latest' }}
-      run: tar.exe -a -c -f cargo-binstall-${{ matrix.target }}.zip ${{ matrix.output }}
+      run: tar.exe -a -c -f shell-rerun-${{ matrix.target }}.zip ${{ matrix.output }}
 
     - name: Create archive (zip, macos)
       if: ${{ matrix.os == 'macos-latest' }}
-      run: zip cargo-binstall-${{ matrix.target }}.zip ${{ matrix.output }}
+      run: zip shell-rerun-${{ matrix.target }}.zip ${{ matrix.output }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: cargo-binstall-${{ matrix.target }}.${{ matrix.archive }}
-        path: cargo-binstall-${{ matrix.target }}.${{ matrix.archive }}
+        name: shell-rerun-${{ matrix.target }}.${{ matrix.archive }}
+        path: shell-rerun-${{ matrix.target }}.${{ matrix.archive }}
 
     - name: Upload binary to release
       if: ${{ startsWith(github.ref, 'refs/tags/v') }}
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: cargo-binstall-${{ matrix.target }}.${{ matrix.archive }}
-        asset_name: cargo-binstall-${{ matrix.target }}.${{ matrix.archive }}
+        file: shell-rerun-${{ matrix.target }}.${{ matrix.archive }}
+        asset_name: shell-rerun-${{ matrix.target }}.${{ matrix.archive }}
         tag: ${{ github.ref }}
         overwrite: true
 
@@ -121,15 +121,15 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
-            output: cargo-binstall
+            output: rr
             archive: tgz
           - target: x86_64-apple-darwin
             os: macos-latest
-            output: cargo-binstall
+            output: rr
             archive: zip
           - target: x86_64-pc-windows-msvc
             os: windows-latest
-            output: cargo-binstall.exe
+            output: rr.exe
             archive: zip
 
     steps:
@@ -138,19 +138,19 @@ jobs:
 
     - uses: actions/download-artifact@v2
       with:
-        name: cargo-binstall-${{ matrix.target }}.${{ matrix.archive }}
+        name: shell-rerun-${{ matrix.target }}.${{ matrix.archive }}
 
     - name: "Extract build artifact (tgz, linux)"
       if: ${{ matrix.os != 'windows-latest' && matrix.os != 'macos-latest' }}
-      run: tar -xvf cargo-binstall-${{ matrix.target }}.tgz
+      run: tar -xvf shell-rerun-${{ matrix.target }}.tgz
 
     - name: "Extract build artifact (zip, windows)"
       if: ${{ matrix.os == 'windows-latest' }}
-      run: tar.exe -xvf cargo-binstall-${{ matrix.target }}.zip
+      run: tar.exe -xvf shell-rerun-${{ matrix.target }}.zip
     
     - name: "Extract build artifact (zip, macos)"
       if: ${{ matrix.os == 'macos-latest' }}
-      run: unzip cargo-binstall-${{ matrix.target }}.zip
+      run: unzip shell-rerun-${{ matrix.target }}.zip
 
     - name: "Run binstall"
-      run: ./${{ matrix.output }} cargo-binstall --manifest-path . --no-confirm
+      run: ./${{ matrix.output }} shell-rerun --manifest-path . --no-confirm
