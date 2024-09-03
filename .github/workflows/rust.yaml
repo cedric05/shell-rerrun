@@ -136,7 +136,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4.1.7
       with:
         name: shell-rerun-${{ matrix.target }}.${{ matrix.archive }}
 
